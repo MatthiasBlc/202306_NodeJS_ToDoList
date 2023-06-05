@@ -27,7 +27,7 @@ export async function findTodos() {
 export async function createTodo({ title, completed = false }) {
   const todo = { title, completed, id: Date.now() };
   const todos = [todo, ...(await findTodos())];
-  await writeFile(path, JSON.stringify(todos));
+  await writeFile(path, JSON.stringify(todos, null, 2));
   return todo;
 }
 
@@ -41,7 +41,14 @@ export async function removeTodo(id) {
   if (todo === -1) {
     throw new NotFoundError();
   }
-  await writeFile(path, JSON.stringify(todos.filter((todo) => todo.id !== id)));
+  await writeFile(
+    path,
+    JSON.stringify(
+      todos.filter((todo) => todo.id !== id),
+      null,
+      2
+    )
+  );
 }
 
 /**
@@ -56,6 +63,6 @@ export async function updateTodo(id, partialTodo) {
     throw new NotFoundError();
   }
   Object.assign(todo, partialTodo);
-  await writeFile(path, JSON.stringify(todos));
+  await writeFile(path, JSON.stringify(todos, null, 2));
   return todo;
 }
