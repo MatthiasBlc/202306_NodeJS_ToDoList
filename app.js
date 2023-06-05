@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { create, index, remove } from "./functions/api/todo.js";
+import { create, index, remove, update } from "./functions/api/todo.js";
 import { NotFoundError } from "./functions/errors.js";
 
 createServer(async (req, res) => {
@@ -17,6 +17,9 @@ createServer(async (req, res) => {
         break;
       case "DELETE:/todos":
         results = await remove(req, res, url);
+        break;
+      case "PUT:/todos":
+        results = await update(req, res, url);
         break;
       default:
         res.writeHead(404);
